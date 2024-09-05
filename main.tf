@@ -78,6 +78,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   }
 }
 
+
 # ECS Task Definition
 resource "aws_ecs_task_definition" "medusa_task" {
   family                   = "medusa-task"

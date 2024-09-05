@@ -103,6 +103,7 @@ resource "aws_ecs_task_definition" "medusa_task" {
     }
   ])
 
+
   tags = {
     Name = "medusa-task"
   }

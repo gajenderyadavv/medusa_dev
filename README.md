@@ -46,25 +46,58 @@ Visit the [Docs](https://docs.medusajs.com/development/backend/prepare-environme
 
 Medusa is a set of commerce modules and tools that allow you to build rich, reliable, and performant commerce applications without reinventing core commerce logic. The modules can be customized and used to build advanced ecommerce stores, marketplaces, or any product that needs foundational commerce primitives. All modules are open-source and freely available on npm.
 
-Learn more about [Medusa’s architecture](https://docs.medusajs.com/development/fundamentals/architecture-overview) and [commerce modules](https://docs.medusajs.com/modules/overview) in the Docs.
 
-## Roadmap, Upgrades & Plugins
 
-You can view the planned, started and completed features in the [Roadmap discussion](https://github.com/medusajs/medusa/discussions/categories/roadmap).
+Medusa App Deployment with Docker, AWS ECS Fargate, and CI/CD
 
-Follow the [Upgrade Guides](https://docs.medusajs.com/upgrade-guides/) to keep your Medusa project up-to-date.
+This documentation outlines the steps to deploy the Medusa app using Docker, AWS ECS Fargate, and GitHub Actions for CI/CD.
 
-Check out all [available Medusa plugins](https://medusajs.com/plugins/).
+🚀 Docker Setup
 
-## Community & Contributions
+Set up a Dockerfile in your Medusa app root.
 
-The community and core team are available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions), where you can ask for support, discuss roadmap, and share ideas.
+Build the Docker image.
 
-Join our [Discord server](https://discord.com/invite/medusajs) to meet other community members.
+Run the Docker container locally, exposing the necessary ports.
 
-## Other channels
+🐳 Pushing Docker Image to AWS ECR
 
-- [GitHub Issues](https://github.com/medusajs/medusa/issues)
-- [Twitter](https://twitter.com/medusajs)
-- [LinkedIn](https://www.linkedin.com/company/medusajs)
-- [Medusa Blog](https://medusajs.com/blog/)
+Authenticate Docker with your AWS ECR.
+
+Tag the Docker image with your ECR repository URL.
+
+Push the tagged image to ECR.
+
+☁️ ECS Fargate Setup
+
+Create a new ECS cluster.
+
+Define a task definition specifying the Docker image and port mappings.
+
+Register the task definition with ECS.
+
+Create a Fargate service, linking it to the cluster and task definition.
+
+🔄 CI/CD with GitHub Actions
+
+Add a GitHub Actions workflow file in .github/workflows/deploy.yml.
+
+Set up the workflow to:
+
+Checkout the code.
+
+Set up Docker Buildx.
+
+Authenticate to ECR.
+
+Build and tag the Docker image.
+
+Push the image to ECR.
+
+Update the ECS service to trigger a new deployment.
+
+Add the following GitHub secrets:
+
+AWS_ACCESS_KEY_ID
+
+AWS_SECRET_ACCESS_KEY

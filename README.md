@@ -52,52 +52,92 @@ Medusa App Deployment with Docker, AWS ECS Fargate, and CI/CD
 
 This documentation outlines the steps to deploy the Medusa app using Docker, AWS ECS Fargate, and GitHub Actions for CI/CD.
 
-🚀 Docker Setup
+# 🚀 Medusa App Deployment with Docker, AWS ECS Fargate, and CI/CD
 
-Set up a Dockerfile in your Medusa app root.
+This repository contains the setup and deployment process for the Medusa app using Docker, AWS ECS Fargate, and GitHub Actions for CI/CD.
 
-Build the Docker image.
+---
 
-Run the Docker container locally, exposing the necessary ports.
+## 📦 Docker Setup
 
-🐳 Pushing Docker Image to AWS ECR
+### 1. Dockerfile
+- Ensure a `Dockerfile` exists in the root of your Medusa app.
+- It should define the base image, working directory, dependencies, and exposed ports.
 
-Authenticate Docker with your AWS ECR.
+### 2. Build Docker Image
+- Build the Docker image using the Docker CLI.
 
-Tag the Docker image with your ECR repository URL.
+### 3. Run Docker Container
+- Run the container locally and map the necessary ports (9000 and 7001).
 
-Push the tagged image to ECR.
+---
 
-☁️ ECS Fargate Setup
+## 🐳 Push Docker Image to AWS ECR
 
-Create a new ECS cluster.
+### 1. Authenticate Docker with ECR
+- Use AWS CLI to log in to your ECR repository.
 
-Define a task definition specifying the Docker image and port mappings.
+### 2. Tag Docker Image
+- Tag the Docker image with your ECR repository URL.
 
-Register the task definition with ECS.
+### 3. Push Image to ECR
+- Push the tagged image to your AWS ECR repository.
 
-Create a Fargate service, linking it to the cluster and task definition.
+---
 
-🔄 CI/CD with GitHub Actions
+## ☁️ Deploy to ECS Fargate
 
-Add a GitHub Actions workflow file in .github/workflows/deploy.yml.
+### 1. Create an ECS Cluster
+- Use AWS CLI or Console to create an ECS cluster.
 
-Set up the workflow to:
+### 2. Define Task Definition
+- Create a task definition with container details (image, ports, CPU, memory).
 
-Checkout the code.
+### 3. Register Task Definition
+- Register the task definition in ECS.
 
-Set up Docker Buildx.
+### 4. Create Fargate Service
+- Set up an ECS Fargate service linked to your cluster and task definition.
 
-Authenticate to ECR.
+---
 
-Build and tag the Docker image.
+## 🔄 CI/CD with GitHub Actions
 
-Push the image to ECR.
+### 1. Add GitHub Actions Workflow
+- Create a workflow file at `.github/workflows/deploy.yml`.
 
-Update the ECS service to trigger a new deployment.
+### 2. Workflow Steps
+- Checkout the code.
+- Set up Docker Buildx.
+- Authenticate with ECR.
+- Build and tag the Docker image.
+- Push the Docker image to ECR.
+- Update ECS service to trigger a new deployment.
 
-Add the following GitHub secrets:
+### 3. Add GitHub Secrets
+- Add the following secrets to your repository settings:
+  - `AWS_ACCESS_KEY_ID`
+  - `AWS_SECRET_ACCESS_KEY`
 
-AWS_ACCESS_KEY_ID
+---
 
-AWS_SECRET_ACCESS_KEY
+## ✅ Continuous Deployment Flow
+
+Every push to the `main` branch will:
+1. Trigger the GitHub Actions workflow.
+2. Build and push the Docker image to ECR.
+3. Update the ECS Fargate service with the new image.
+4. Deploy the latest version of the Medusa app.
+
+---
+
+## 🔗 Useful Commands (Optional)
+
+- **Build Docker image:** `docker build -t medusa-app .`
+- **Run Docker container:** `docker run -p 9000:9000 -p 7001:7001 medusa-app`
+- **Authenticate to ECR:** `aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <your-ecr-url>`
+- **Push image to ECR:** `docker push <your-ecr-url>:latest`
+
+---
+
+For any questions or suggestions, feel free to open an issue! ✨
